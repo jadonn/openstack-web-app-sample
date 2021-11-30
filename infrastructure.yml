@@ -4,23 +4,28 @@
   collections:
     - openstack.cloud
   tasks:
-    - network:
+    - name: "Create web_tier network"
+      network:
         state: present
         name: web_tier
-    - subnet:
+    - name: "Create web_tier subnet"
+      subnet:
         state: present
         network_name: web_tier
         name: web_tier
         cidr: 10.0.0.0/24
-    - network:
+    - name: "Create db_tier network"
+      network:
         state: present
         name: db_tier
-    - subnet:
+    - name: "Create db_tier subnet"
+      subnet:
         state: present
         network_name: db_tier
         name: db_tier
         cidr: 10.0.1.0/24
-    - router:
+    - name: "Create router with web_tier and db_tier interfaces"
+      router:
         state: present
         name: ansible-router
         network: External
@@ -31,11 +36,13 @@
           - net: db_tier
             subnet: db_tier
             portip: 10.0.1.1
-    - security_group:
+    - name: "Create web_tier_jumpstation security group"
+      security_group:
         state: present
         name: web_tier_jumpstation
         description: "Web Tier Jumpstation access"
-    - security_group_rule:
+    - name: "Create SSH rule for web_tier_jumpstation security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -44,11 +51,13 @@
         port_range_min: 22
         port_range_max: 22
         remote_ip_prefix: 0.0.0.0/0
-    - security_group:
+    - name: "Create web_tier_dev security group"
+      security_group:
         state: present
         name: web_tier_dev
         description: "Web Tier development server access"
-    - security_group_rule:
+    - name: "Create SSH rule for web_tier_dev security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -57,11 +66,13 @@
         port_range_min: 22
         port_range_max: 22
         remote_group: web_tier_jumpstation
-    - security_group:
+    - name: "Create web_tier security group"
+      security_group:
         state: present
         name: web_tier
         description: "Access to Web Instances"
-    - security_group_rule:
+    - name: "Create SSH rule for web_tier from web_tier_jumpstation"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -70,7 +81,8 @@
         port_range_min: 22
         port_range_max: 22
         remote_group: web_tier_jumpstation
-    - security_group_rule:
+    - name: "Create SSH rule for web_tier from web_tier_dev"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -79,11 +91,13 @@
         port_range_min: 22
         port_range_max: 22
         remote_group: web_tier_dev
-    - security_group:
+    - name: "Create public_http security group"
+      security_group:
         state: present  
         name: public_http
         description: "Public HTTP traffic to the load balancer"
-    - security_group_rule:
+    - name: "Create HTTP rule for public_http security group from all IPs"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -92,11 +106,13 @@
         port_range_min: 80
         port_range_max: 80
         remote_ip_prefix: 0.0.0.0/0
-    - security_group:
+    - name: "Create http_from_load_balancer security group"
+      security_group:
         state: present
         name: "http_from_load_balancer"
         description: "HTTP traffic from load balancer to web_tier"
-    - security_group_rule:
+    - name: "Create HTTP rule for http_from_load_balancer security group from public_http security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -105,11 +121,13 @@
         port_range_min: 80
         port_range_max:  80
         remote_group: public_http
-    - security_group:
+    - name: "Create public_https security group"
+      security_group:
         state: present
         name: public_https
         description: "Public HTTPS traffic to the load balancer"
-    - security_group_rule:
+    - name: "Create HTTPS rule for public_https security group from all IPs"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -118,11 +136,13 @@
         port_range_min: 443
         port_range_max: 443
         remote_ip_prefix: 0.0.0.0/0
-    - security_group:
+    - name: "Create https_from_load_balancer security group"
+      security_group:
         state: present
         name: https_from_load_balancer
         description: "HTTPS traffic from load balancer to web_tier"
-    - security_group_rule:
+    - name: "Create HTTPS rule for https_from_load_balancer security from public_https security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -131,11 +151,13 @@
         port_range_min: 443
         port_range_max: 443
         remote_group: public_https
-    - security_group:
+    - name: "Create db_tier_jumpstation security group"
+      security_group:
         state: present
         name: db_tier_jumpstation
         description: "SSH access to DB Tier Jumpstation from Web Tier jumpstation"
-    - security_group_rule:
+    - name: "Create SSH rule for db_tier_jumpstation security group from web_tier_jumpstation security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -144,11 +166,13 @@
         port_range_min: 22
         port_range_max: 22
         remote_group: web_tier_jumpstation
-    - security_group:
+    - name: "Create db_tier security group"
+      security_group:
         state: present
         name: db_tier
         description: "Access to DB tier instances"
-    - security_group_rule:
+    - name: "Create SSH rule for db_tier security group from db_tier_jumpstation security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -157,7 +181,8 @@
         port_range_min: 22
         port_range_max: 22
         remote_group: db_tier_jumpstation
-    - security_group_rule:
+    - name: "Create MySQL rule for db_tier security group from web_tier security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
@@ -166,7 +191,8 @@
         port_range_min: 3306
         port_range_max: 3306
         remote_group: web_tier
-    - security_group_rule:
+    - name: "Create MySQL rule for db_tier security group from db_tier security group"
+      security_group_rule:
         state: present
         direction: ingress
         ethertype: IPv4
