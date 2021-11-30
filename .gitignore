@@ -1,1 +1,4 @@
 venv/
+*openrc.sh
+openstack_inventory.py
+clouds.yml

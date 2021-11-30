@@ -1,0 +1,38 @@
+---
+- name: Setup OpenStack infrastructure
+  hosts: localhost
+  collections:
+    - openstack.cloud
+  tasks:
+    - network:
+        cloud: salescloud
+        state: present
+        name: web_tier
+    - subnet:
+        cloud: salescloud
+        state: present
+        network_name: web_tier
+        name: web_tier
+        cidr: 10.0.0.0/24
+    - network:
+        cloud: salescloud
+        state: present
+        name: db_tier
+    - subnet:
+        cloud: salescloud
+        state: present
+        network_name: db_tier
+        name: db_tier
+        cidr: 10.0.1.0/24
+    - router:
+        cloud: salescloud
+        state: present
+        name: ansible-router
+        network: External
+        interfaces:
+          - net: web_tier
+            subnet: web_tier
+            portip: 10.0.0.1
+          - net: db_tier
+            subnet: db_tier
+            portip: 10.0.1.1
