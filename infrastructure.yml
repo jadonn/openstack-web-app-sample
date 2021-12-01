@@ -259,3 +259,58 @@
         auto_ip: no
         security_groups:
           - web_tier
+    - name: "Create db_tier_jumpstation instance"
+      server:
+        state: present
+        name: "db_tier_jumpstation"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.micro
+        network: db_tier
+        auto_ip: no
+        security_groups:
+          - db_tier_jumpstation
+    - name: "Create db_1 instance"
+      server:
+        state: present
+        name: "db_1"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.large
+        network: db_tier
+        auto_ip: no
+        security_groups:
+          - db_tier
+    - name: "Create db_1_repl_1 instance"
+      server:
+        state: present
+        name: "db_1_repl_1"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.large
+        network: db_tier
+        auto_ip: no
+        security_groups:
+          - db_tier
+    - name: "Create db_2 instance"
+      server:
+        state: present
+        name: "db_2"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.large
+        network: db_tier
+        auto_ip: no
+        security_groups:
+          - db_tier
+    - name: "Create db_2_repl_2 instance"
+      server:
+        state: present
+        name: "db_2_repl_2"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.large
+        network: db_tier
+        auto_ip: no
+        security_groups:
+          - db_tier
