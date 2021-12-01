@@ -1,6 +1,9 @@
 ---
 - name: Setup OpenStack infrastructure
   hosts: localhost
+  vars:
+    instance_image: "CentOS 7 (el7-x86_64)"
+    instance_key: work
   collections:
     - openstack.cloud
   tasks:
@@ -201,3 +204,14 @@
         port_range_min: 3306
         port_range_max: 3306
         remote_group: db_tier
+    - name: "Create web_tier_jumpstation instance"
+      server:
+        state: present
+        name: "web_tier_jumpstation"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.micro
+        network: web_tier
+        auto_ip: no
+        security_groups:
+          - web_tier_jumpstation
