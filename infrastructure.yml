@@ -215,3 +215,47 @@
         auto_ip: no
         security_groups:
           - web_tier_jumpstation
+    - name: "Create wp_dev instance"
+      server:
+        state: present
+        name: "wp_dev"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.micro
+        network: web_tier
+        auto_ip: no
+        security_groups:
+          - web_tier_dev
+    - name: "Create wp_1 instance"
+      server:
+        state: present
+        name: "wp_1"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.medium
+        network: web_tier
+        auto_ip: no
+        security_groups:
+          - web_tier
+    - name: "Create wp_2 instance"
+      server:
+        state: present
+        name: "wp_2"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.medium
+        network: web_tier
+        auto_ip: no
+        security_groups:
+          - web_tier
+    - name: "Create wp_3 instance"
+      server:
+        state: present
+        name: "wp_3"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.medium
+        network: web_tier
+        auto_ip: no
+        security_groups:
+          - web_tier
