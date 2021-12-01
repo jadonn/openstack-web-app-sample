@@ -314,3 +314,16 @@
         auto_ip: no
         security_groups:
           - db_tier
+    - name: "Create load_balancer instance"
+      server:
+        state: present
+        name: "load_balancer"
+        image: "{{ instance_image }}"
+        key_name: "{{ instance_key }}"
+        flavor: c1.large
+        network: web_tier
+        auto_ip: no
+        security_groups:
+          - public_http
+          - public_https
+          - web_tier
