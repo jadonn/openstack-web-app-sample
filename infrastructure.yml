@@ -327,3 +327,15 @@
           - public_http
           - public_https
           - web_tier
+    - name: "Add floating IP to load_balancer instance"
+      floating_ip:
+        state: present
+        reuse: yes
+        server: load_balancer
+        network: External
+    - name: "Add floating IP to web_tier_jumpstation instance"
+      floating_ip:
+        state: present
+        reuse: yes
+        server: web_tier_jumpstation
+        network: External
