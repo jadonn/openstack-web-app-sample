@@ -137,7 +137,7 @@ If everything installed successfully, you should be able to run the `ansible` an
 ## Install the OpenStack Cloud collection using Ansible Galaxy
 Ansible Galaxy is the public repository of Ansible playbooks and resources that Ansible users can download and use for free. When you installed Ansible, the `ansible-galaxy` tool was also installed. You can use the `ansible-galaxy` command to install resources users have uploaded to the central Ansible Galaxy service. Ansible Galaxy has a collection of playbooks to manage infrastructure on OpenStack private clouds. Run the following command to install the OpenStack Cloud collection from Ansible Galaxy:
 
-    ansible-playbook collection install openstack.cloud
+    ansible-galaxy collection install openstack.cloud
 
 This command will download the collection of playbooks under the name `openstack.cloud` into your local environment from Ansible Galaxy. The output will look something like:
 
